@@ -1,0 +1,46 @@
+dataset:
+  id: example
+  root: data/example
+  record_count: 4096
+  seed: 20260831
+index:
+  padded_rows: 128
+shkr:
+  partitions: 4
+  token_pool_size: 16
+  reuse_tokens: false
+  host_mode: alternate
+query:
+  leaf_count: 2
+  query_id: 0
+  formula_source: queries.json
+preprocessing:
+  epoch: 1
+  triple_pool_size: 12
+  reuse_triples: false
+  threads: 4
+payload:
+  enabled: true
+  entry_bytes: 256
+  pbc:
+    width: 3
+    lambda_stat: 40
+    layout_seed: 20260901
+  dpf: {use_evalfull8: true}
+network:
+  client_addr: 127.0.0.1:9300
+  s0_addr: 127.0.0.1:9301
+  s1_addr: 127.0.0.1:9302
+  ot_s0_port: 9400
+  ot_s1_port: 9401
+threads:
+  client: 4
+  s0: 4
+  s1: 4
+benchmark:
+  require_exact_t: true
+  requested_t: 8
+  warmup: 0
+  repetitions: 1
+  paper_mode: false
+  output: results/example/raw_runs.csv

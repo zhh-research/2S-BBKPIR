@@ -1,0 +1,6 @@
+diff --git a/ot/kk-ot-ext-rec.cpp b/ot/kk-ot-ext-rec.cpp
+--- a/ot/kk-ot-ext-rec.cpp
++++ b/ot/kk-ot-ext-rec.cpp
+@@ -376 +376 @@
+-	while(chan->data_available() && !(mask_queue->empty())) {
++	while(!(mask_queue->empty())) {

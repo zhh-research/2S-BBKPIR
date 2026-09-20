@@ -1,0 +1,8 @@
+/build/
+/data/
+/artifacts/
+/results/
+/tmp/
+/.venv/
+__pycache__/
+*.pyc

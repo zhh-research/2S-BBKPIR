@@ -1,0 +1,11 @@
+diff --git a/dpf.cpp b/dpf.cpp
+--- a/dpf.cpp
++++ b/dpf.cpp
+@@ -7,0 +8,2 @@
++#include <openssl/rand.h>
++#include <stdexcept>
+@@ -65 +67,3 @@
+-        PRNG p = PRNG::getTestPRNG();
++        block fresh;
++        if (RAND_bytes(reinterpret_cast<unsigned char*>(&fresh), sizeof(fresh)) != 1) throw std::runtime_error("DPF RAND_bytes failed");
++        PRNG p(fresh);
