@@ -1,7 +1,5 @@
 # 2S-BBKPIR
 
-This repository contains the 2S-BBKPIR protocol implementation: SHKR keyword filtering, Boolean MPC, standard three-copy PBC-DPF batch retrieval, dual FourQ OPRF, HKDF-SHA256, and AES-256-GCM. It contains no paper datasets, measured results, benchmark drivers, or VM-specific dependency builds.
-
 ## Requirements
 
 - Linux x86-64 with AVX2; CMake 3.24+, a C++17 compiler, OpenMP, GNU gold, OpenSSL, Boost.System/Thread, GMP/GMPXX, and Python 3 with NumPy (only for generating the example corpus).
@@ -57,5 +55,3 @@ OMP_NUM_THREADS=4 ./build/shkr_node --role client --config configs/example.yaml 
 wait "$client" && wait "$s0" && wait "$s1"
 cat results/example/raw_runs.csv
 ```
-
-The output row should report `correct=true` and `payload_result_valid=true`. To use another workload, provide a corpus in the same format as `scripts/generate_synthetic.py`, update `configs/example.yaml`, and run the same three roles. Each role is a separate process; preprocessing runs before online timing. The example uses fresh OT tokens and Beaver triples. Runtime-generated `build/`, `data/`, `artifacts/`, `results/`, and `tmp/` directories are ignored by Git.
