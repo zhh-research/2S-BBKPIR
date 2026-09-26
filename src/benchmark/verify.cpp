@@ -1,6 +1,6 @@
 #include "common/config.h"
 #include "crypto/symmetric.h"
-using namespace shkr;
+using namespace shks;
 int main(int argc, char **argv) {
     try {
         std::vector<char *> config_args{argv[0]};

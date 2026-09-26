@@ -5,7 +5,7 @@
 #include <array>
 #include <istream>
 #include <ostream>
-namespace shkr {
+namespace shks {
 using FourQPoint = apsi::oprf::ECPoint;
 class OprfKey {
     std::array<unsigned char, FourQPoint::order_size> key_{};

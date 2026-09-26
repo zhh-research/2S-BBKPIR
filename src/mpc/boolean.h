@@ -2,7 +2,7 @@
 #include "common/config.h"
 #include "network/link.h"
 #include <omp.h>
-namespace shkr {
+namespace shks {
 
 class BooleanWorkspace {
     const Config &c_;

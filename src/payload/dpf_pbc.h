@@ -7,7 +7,7 @@
 #include <limits>
 #include <numeric>
 #include <omp.h>
-namespace shkr {
+namespace shks {
 
 struct PbcLayout {
     std::vector<std::array<uint32_t, 3>> ranks;

@@ -16,7 +16,7 @@
 #include <time.h>
 #include <nlohmann/json.hpp>
 
-namespace shkr {
+namespace shks {
 using Json = nlohmann::json;
 using Bytes = std::vector<uint8_t>;
 using Seed = std::array<uint8_t, 16>;

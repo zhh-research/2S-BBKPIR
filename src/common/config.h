@@ -2,7 +2,7 @@
 #include "common/core.h"
 #include "mpc/circuit.h"
 #include <yaml-cpp/yaml.h>
-namespace shkr {
+namespace shks {
 inline Json yaml_json(const YAML::Node &n) {
     if (n.IsNull())
         return nullptr;
@@ -96,7 +96,7 @@ struct Config {
         require(N > 0 && N <= manifest.at("N").get<uint64_t>(), "N exceeds corpus");
         W = word_count(N);
         Mr = manifest.at("M_real");
-        p = get<uint32_t>("shkr.partitions", 8);
+        p = get<uint32_t>("shks.partitions", 8);
         require(pow2(p) && p >= 2 && p <= 256, "native KK13 requires power-of-two p in [2,256]");
         auto ptr = Json::json_pointer("/index/padded_rows");
         if (!j.contains(ptr) || j.at(ptr) == "auto")
@@ -107,9 +107,9 @@ struct Config {
         L = M / p;
         epoch = get<uint64_t>("preprocessing.epoch", 1);
         tokens =
-            get<size_t>("shkr.token_pool_size", get<size_t>("preprocessing.token_pool_size", 128));
+            get<size_t>("shks.token_pool_size", get<size_t>("preprocessing.token_pool_size", 128));
         reuse_tokens =
-            get<bool>("shkr.reuse_tokens", get<bool>("preprocessing.reuse_tokens", true));
+            get<bool>("shks.reuse_tokens", get<bool>("preprocessing.reuse_tokens", true));
         triples = get<size_t>("preprocessing.triple_pool_size", 64);
         reuse_triples = get<bool>("preprocessing.reuse_triples", true);
         payload = get<bool>("payload.enabled", true);
@@ -158,10 +158,10 @@ struct Config {
                   std::to_string(entry) + "_payload" + std::to_string(payload) + "_seed" +
                   std::to_string(layout_seed));
         artifacts =
-            fs::path("artifacts") / dataset_id / "shkr" /
+            fs::path("artifacts") / dataset_id / "shks" /
             ("N" + std::to_string(N) + "_M" + std::to_string(M) + "_p" + std::to_string(p)) /
             ("tokens" + std::to_string(tokens) + "_triples" + std::to_string(triples) + "_epoch" +
-             std::to_string(epoch) + "_host_" + get<std::string>("shkr.host_mode", "alternate"));
+             std::to_string(epoch) + "_host_" + get<std::string>("shks.host_mode", "alternate"));
         addresses = {get<std::string>("network.client_addr", "127.0.0.1:9300"),
                      get<std::string>("network.s0_addr", "127.0.0.1:9301"),
                      get<std::string>("network.s1_addr", "127.0.0.1:9302")};

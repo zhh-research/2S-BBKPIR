@@ -1,4 +1,4 @@
-# 2S-BBKPIR
+# PBKPIR
 
 ## Dependencies
 
@@ -27,7 +27,7 @@ python3 scripts/configure_dependencies.py \
   --gsl-source /path/to/GSL \
   --yaml-source /path/to/yaml-cpp \
   --json-source /path/to/json \
-  --fourq-archive /path/to/libshkr_fourq.a
+  --fourq-archive /path/to/libshks_fourq.a
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
 ```
@@ -38,11 +38,11 @@ cmake --build build -j
 python3 scripts/generate_synthetic.py \
   --N 4096 --M-real 128 --M 128 --k 2 --requested-t 8 \
   --entry-bytes 256 --output data/example
-./build/shkr_preprocess --config configs/example.yaml
+./build/shks_preprocess --config configs/example.yaml
 mkdir -p tmp
-OMP_NUM_THREADS=4 ./build/shkr_node --role s0 --config configs/example.yaml >tmp/s0.log 2>&1 & s0=$!
-OMP_NUM_THREADS=4 ./build/shkr_node --role s1 --config configs/example.yaml >tmp/s1.log 2>&1 & s1=$!
-OMP_NUM_THREADS=4 ./build/shkr_node --role client --config configs/example.yaml >tmp/client.log 2>&1 & client=$!
+OMP_NUM_THREADS=4 ./build/shks_node --role s0 --config configs/example.yaml >tmp/s0.log 2>&1 & s0=$!
+OMP_NUM_THREADS=4 ./build/shks_node --role s1 --config configs/example.yaml >tmp/s1.log 2>&1 & s1=$!
+OMP_NUM_THREADS=4 ./build/shks_node --role client --config configs/example.yaml >tmp/client.log 2>&1 & client=$!
 wait "$client" && wait "$s0" && wait "$s1"
 python3 -c 'import csv; r=next(csv.DictReader(open("results/example/raw_runs.csv"))); assert r["correct"] == "true" and r["payload_result_valid"] == "true" and r["matched_count"] == "8"; print("PASS")'
 ```

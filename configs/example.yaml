@@ -5,7 +5,7 @@ dataset:
   seed: 20260831
 index:
   padded_rows: 128
-shkr:
+shks:
   partitions: 4
   token_pool_size: 16
   reuse_tokens: false

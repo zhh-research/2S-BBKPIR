@@ -1,6 +1,6 @@
 #pragma once
 #include "common/core.h"
-namespace shkr {
+namespace shks {
 struct Gate {
     std::string op;
     int a = -1, b = -1, depth = 0, triple = -1, leaf = -1;

@@ -9,7 +9,7 @@
 #include <kk-ot-ext-snd.h>
 #include <kk-ot-ext-rec.h>
 #include <xormasking.h>
-namespace shkr {
+namespace shks {
 class KK13 {
     Seed init_seed_ = random_seed();
     crypto crypt_{128, init_seed_.data()};

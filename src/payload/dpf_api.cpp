@@ -1,6 +1,6 @@
 #include "payload/dpf_api.h"
 #include <dpf.h>
-namespace shkr::dpf_api {
+namespace shks::dpf_api {
 std::pair<Key, Key> gen(size_t alpha, size_t logn) {
     return DPF::Gen(alpha, logn);
 }

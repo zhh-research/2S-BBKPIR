@@ -8,7 +8,7 @@
 #include <spawn.h>
 #include <sys/wait.h>
 extern char **environ;
-namespace shkr {
+namespace shks {
 struct EndpointSnapshot {
     double cpu;
     NetSnapshot net;
@@ -164,7 +164,7 @@ int server(const Config &c, int b) {
                 end = snapshot(link, ots);
             }
         }
-        Json times = {{"shkr_row_ms", row_ms},
+        Json times = {{"shks_row_ms", row_ms},
                       {"ot_online_ms", ot_ms},
                       {"kk13_extension_wait_ms", kk_ms},
                       {"ot_pad_ms", pad_ms},
@@ -414,7 +414,7 @@ int client(const Config &c) {
         }
         auto verification_report = verify_root / (id + "_verification.json");
         std::vector<std::string> command{
-            "./build/shkr_verify",       "--config",  verify_config.string(), "--result",
+            "./build/shks_verify",       "--config",  verify_config.string(), "--result",
             result_file.string(),        "--payload", payload_file.string(),  "--report",
             verification_report.string()};
         std::vector<char *> argv;
@@ -515,8 +515,8 @@ int client(const Config &c) {
              {"s1_filter_cpu_ms", sf1["cpu_ms"]},
              {"filter_total_cpu_ms", cf["cpu_ms"].get<double>() + sf0["cpu_ms"].get<double>() +
                                          sf1["cpu_ms"].get<double>()},
-             {"shkr_row_ms_max", std::max(s0["stages"]["shkr_row_ms"].get<double>(),
-                                          s1["stages"]["shkr_row_ms"].get<double>())},
+             {"shks_row_ms_max", std::max(s0["stages"]["shks_row_ms"].get<double>(),
+                                          s1["stages"]["shks_row_ms"].get<double>())},
              {"reshare_ms", std::max(s0["stages"]["reshare_ms"].get<double>(),
                                      s1["stages"]["reshare_ms"].get<double>())},
              {"boolean_ms", std::max(s0["stages"]["boolean_ms"].get<double>(),
@@ -605,7 +605,7 @@ int client(const Config &c) {
              {"dpf_total_domain_positions", ids.empty() ? 0 : 3 * c.N},
              {"bitmap_real_storage_bytes", uint64_t(c.Mr) * c.W * 8},
              {"bitmap_padded_storage_bytes", uint64_t(c.M) * c.W * 8},
-             {"shkr_hint_token_bytes_per_token", token_bytes / c.tokens},
+             {"shks_hint_token_bytes_per_token", token_bytes / c.tokens},
              {"total_preprocessed_token_pool_bytes", token_bytes},
              {"pbc_virtual_db_bytes", 3 * c.N * c.entry},
              {"pbc_rank_mapping_bytes", 3 * c.N * sizeof(uint32_t)},
@@ -633,15 +633,15 @@ int client(const Config &c) {
 }
 int main(int argc, char **argv) {
     try {
-        shkr::Config c(argc, argv);
-        shkr::require(c.role == "client" || c.role == "s0" || c.role == "s1",
+        shks::Config c(argc, argv);
+        shks::require(c.role == "client" || c.role == "s0" || c.role == "s1",
                       "--role client|s0|s1 is required");
         omp_set_dynamic(0);
         omp_set_nested(0);
         omp_set_num_threads(c.threads(c.role));
         if (c.role == "client")
-            return shkr::client(c);
-        return shkr::server(c, c.role == "s0" ? 0 : 1);
+            return shks::client(c);
+        return shks::server(c, c.role == "s0" ? 0 : 1);
     } catch (const std::exception &e) {
         std::cerr << "ERROR: " << e.what() << std::endl;
         return 1;

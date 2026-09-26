@@ -4,7 +4,7 @@
 #include <brpc/protocol.h>
 #include <string_view>
 #include <yacl/link/factory.h>
-namespace shkr {
+namespace shks {
 inline constexpr std::array<std::string_view, 15> stage_names = {
     "QUERY_BATCH",  "OT_LONG",   "RESHARE",      "BEAVER_OPEN",     "REVEAL",
     "PAYLOAD_META", "DPF_QUERY", "DPF_RESPONSE", "NAIVE_DPF_QUERY", "NAIVE_DPF_RESPONSE",
@@ -59,7 +59,7 @@ class Link {
 
   public:
     Link(int rank, const std::vector<std::string> &addresses)
-        : rank_(rank), trace_(std::getenv("SHKR_TRACE") != nullptr) {
+        : rank_(rank), trace_(std::getenv("SHKS_TRACE") != nullptr) {
         yacl::link::ContextDesc d;
         d.id = "SHPR";
         d.recv_timeout_ms = 1800000;

@@ -4,7 +4,7 @@
 #include "payload/dpf_pbc.h"
 #include <numeric>
 #include <omp.h>
-namespace shkr {
+namespace shks {
 struct Token {
     uint32_t host = 0;
     std::vector<uint32_t> delta;
@@ -25,7 +25,7 @@ inline Json expected_manifest(const Config &c) {
             {"epoch", c.epoch},
             {"token_count", c.tokens},
             {"triple_count", c.triples},
-            {"host_mode", c.get<std::string>("shkr.host_mode", "alternate")},
+            {"host_mode", c.get<std::string>("shks.host_mode", "alternate")},
             {"corpus", fs::absolute(c.corpus).string()}};
 }
 inline Json common_manifest(const Config &c) {
@@ -65,7 +65,7 @@ inline void save_tokens(const Config &c, const std::vector<Token> &tokens, int r
                 w.b.size());
 }
 inline std::vector<Token> load_tokens(const Config &c, int role) {
-    auto hostmode = c.get<std::string>("shkr.host_mode", "alternate");
+    auto hostmode = c.get<std::string>("shks.host_mode", "alternate");
     require(hostmode == "alternate" || hostmode == "s0" || hostmode == "s1", "unknown host_mode");
     auto host = [&](size_t i) {
         return hostmode == "alternate" ? uint32_t(i % 2) : uint32_t(hostmode == "s1");
@@ -110,7 +110,7 @@ inline void preprocess(const Config &c) {
                 "common artifact manifest mismatch; choose another dataset.id");
     if (fs::exists(c.artifacts / "manifest.json"))
         require(read_json(c.artifacts / "manifest.json") == expected_manifest(c),
-                "SHKR artifact manifest mismatch");
+                "SHKS artifact manifest mismatch");
     omp_set_dynamic(0);
     omp_set_nested(0);
     omp_set_num_threads(c.get<int>("preprocessing.threads", 8));
@@ -134,7 +134,7 @@ inline void preprocess(const Config &c) {
                     s1.size() * 8);
     }
     std::vector<Token> tokens(c.tokens);
-    auto hostmode = c.get<std::string>("shkr.host_mode", "alternate");
+    auto hostmode = c.get<std::string>("shks.host_mode", "alternate");
     require(hostmode == "alternate" || hostmode == "s0" || hostmode == "s1", "unknown host mode");
 #pragma omp parallel for schedule(static)
     for (size_t nu = 0; nu < c.tokens; nu++) {

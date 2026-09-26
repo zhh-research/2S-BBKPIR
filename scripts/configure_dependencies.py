@@ -52,33 +52,33 @@ def main():
     for archive in ("libencrypto_utils.a", "librelic_s.a", "libgmpxx.a", "libgmp.a"):
         existing(prefix / "lib" / archive, archive)
     sources = {
-        "SHKR_DPF_SOURCE": existing(args.dpf_source, "dpf-cpp", "dpf.cpp"),
-        "SHKR_OT_SOURCE": existing(args.ot_source, "OTExtension", "ot/kk-ot-ext-rec.cpp"),
-        "SHKR_GSL_SOURCE": existing(args.gsl_source, "GSL", "include/gsl/gsl"),
-        "SHKR_YAML_SOURCE": existing(args.yaml_source, "yaml-cpp", "CMakeLists.txt"),
-        "SHKR_JSON_SOURCE": existing(
+        "SHKS_DPF_SOURCE": existing(args.dpf_source, "dpf-cpp", "dpf.cpp"),
+        "SHKS_OT_SOURCE": existing(args.ot_source, "OTExtension", "ot/kk-ot-ext-rec.cpp"),
+        "SHKS_GSL_SOURCE": existing(args.gsl_source, "GSL", "include/gsl/gsl"),
+        "SHKS_YAML_SOURCE": existing(args.yaml_source, "yaml-cpp", "CMakeLists.txt"),
+        "SHKS_JSON_SOURCE": existing(
             args.json_source, "nlohmann/json", "single_include/nlohmann/json.hpp"
         ),
-        "SHKR_APSI_SOURCE": existing(
+        "SHKS_APSI_SOURCE": existing(
             args.apsi_source or cpp / "third_party/APSI", "APSI", "common/apsi/item.h"
         ),
-        "SHKR_COMPAT_INCLUDE": existing(
+        "SHKS_COMPAT_INCLUDE": existing(
             args.compat_include or cpp / "src/third_party_compat",
             "APSI compatibility headers",
             "apsi/config.h",
         ),
-        "SHKR_ENCRYPTO_GENERATED_INCLUDE": existing(
+        "SHKS_ENCRYPTO_GENERATED_INCLUDE": existing(
             args.encrypto_generated_include or cpp / "build/aby/extern/ENCRYPTO_utils/include",
             "ENCRYPTO generated headers",
             "cmake_constants.h",
         ),
-        "SHKR_FOURQ_ARCHIVE": existing(args.fourq_archive, "FourQ archive"),
-        "SHKR_PREFIX": prefix,
+        "SHKS_FOURQ_ARCHIVE": existing(args.fourq_archive, "FourQ archive"),
+        "SHKS_PREFIX": prefix,
     }
-    dpf_code = (sources["SHKR_DPF_SOURCE"] / "dpf.cpp").read_text()
+    dpf_code = (sources["SHKS_DPF_SOURCE"] / "dpf.cpp").read_text()
     if "RAND_bytes(" not in dpf_code or "PRNG p(fresh)" not in dpf_code:
         raise SystemExit("dpf-cpp is missing patches/dpf-fresh-randomness.patch")
-    receiver_code = (sources["SHKR_OT_SOURCE"] / "ot/kk-ot-ext-rec.cpp").read_text()
+    receiver_code = (sources["SHKS_OT_SOURCE"] / "ot/kk-ot-ext-rec.cpp").read_text()
     if (
         "while(!(mask_queue.empty()))" not in receiver_code
         or "while(!(mask_queue->empty()))" not in receiver_code
@@ -129,10 +129,10 @@ def main():
     build.mkdir(exist_ok=True)
     rsp = build / "yacl_link.rsp"
     rsp.write_text("\n".join(flags) + "\n")
-    sources["SHKR_YACL_RSP"] = rsp
+    sources["SHKS_YACL_RSP"] = rsp
     cmake = [f'set({name} "{cmake_path(path)}")' for name, path in sources.items()]
     cmake.append(
-        "set(SHKR_YACL_INCLUDES " + " ".join(f'"{cmake_path(path)}"' for path in includes) + ")"
+        "set(SHKS_YACL_INCLUDES " + " ".join(f'"{cmake_path(path)}"' for path in includes) + ")"
     )
     (build / "deps.cmake").write_text("\n".join(cmake) + "\n")
     print(f"Configured existing dependencies in {build}; no libraries were installed or changed.")

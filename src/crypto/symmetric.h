@@ -4,7 +4,7 @@
 #include <openssl/kdf.h>
 #include <openssl/rand.h>
 #include <openssl/sha.h>
-namespace shkr {
+namespace shks {
 inline void random_bytes(void *p, size_t n) {
     auto b = static_cast<uint8_t *>(p);
     while (n) {
